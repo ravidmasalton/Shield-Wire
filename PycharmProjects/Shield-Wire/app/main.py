@@ -1,6 +1,10 @@
-# A simple health check for Shield-Wire
-def health_check():
-    return "Shield-Wire is running"
+from flask import Flask, jsonify
 
-if __name__ == "__main__":
-    print(health_check())
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return jsonify({"message": "Shield-Wire Backend is running!"})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
