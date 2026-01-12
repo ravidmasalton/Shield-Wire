@@ -1,10 +1,20 @@
 version: '3.8'
 
 services:
+  # האפליקציה שכתבנו בפייתון
   shield-wire-app:
     build: .
     ports:
       - "8080:8080"
+    networks:
+      - shield-network
+    depends_on:
+      - cobraint-engine
+
+  # השירות החדש שאנחנו מוסיפים עכשיו
+  cobraint-engine:
+    image: alpine
+    command: /bin/sh -c "while true; do echo 'Cobraint Engine processing data...'; sleep 10; done"
     networks:
       - shield-network
 
