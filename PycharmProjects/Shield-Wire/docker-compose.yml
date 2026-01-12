@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  # האפליקציה שכתבנו בפייתון
+  # האפליקציה שלך
   shield-wire-app:
     build: .
     ports:
@@ -9,15 +7,31 @@ services:
     networks:
       - shield-network
     depends_on:
+      - db
       - cobraint-engine
 
-  # השירות החדש שאנחנו מוסיפים עכשיו
+  # המנוע של Cobraint (השארנו אותו כמו שהיה)
   cobraint-engine:
     image: alpine
     command: /bin/sh -c "while true; do echo 'Cobraint Engine processing data...'; sleep 10; done"
     networks:
       - shield-network
 
+  # בסיס הנתונים החדש
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: shield_db
+    networks:
+      - shield-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 networks:
   shield-network:
     driver: bridge
+
+volumes:
+  postgres_data:
